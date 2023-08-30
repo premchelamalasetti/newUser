@@ -18,11 +18,9 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
-    private UserRepository userRepository;
 
-    public UserController(UserService userService,UserRepository userRepository) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userRepository=userRepository;
     }
 
     @PostMapping("/createUser")
@@ -36,9 +34,7 @@ public class UserController {
     }
     @GetMapping("/allUser?page=1&size=2")
     public Page<User> allUsers(@RequestParam int page,@RequestParam int size){
-        Pageable pr= PageRequest.of(1,2);
-        System.out.println(pr);
-        return userRepository.findAll(pr);
+        return userService.getAllUsers(page,size);
     }
 
     @GetMapping("userById/{id}")
