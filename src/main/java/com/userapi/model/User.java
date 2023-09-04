@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Pattern;
 import java.util.Date;
 
 @Entity
-@Table(name = "usersDetails",uniqueConstraints = @UniqueConstraint(columnNames = "gmail"))
+@Table(name = "usersDetails")//,uniqueConstraints = @UniqueConstraint(columnNames = "gmail")
 public class User {
 
     @Id

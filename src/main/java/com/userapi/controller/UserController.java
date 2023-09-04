@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +25,8 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/createUser")
+    @PostMapping(value = "/createUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
     public User user(@Valid @RequestBody User user) {
         return userService.createUser(user);
     }
@@ -43,12 +46,12 @@ public class UserController {
         return ResponseEntity.ok().body(user);
     }
 
-    @DeleteMapping("/deleteUserById{id}")
+    @DeleteMapping("/deleteUserById/{id}")
     public void deleteUserById(@PathVariable Long id) {
         userService.deleteUserById(id);
     }
 
-    @PatchMapping("/updateUserById{id}")
+    @PutMapping ("/updateUserById/{id}")
     public User updateUserById(@PathVariable Long id, @RequestBody User user) {
          return userService.updateUserById(user,id);
     }

@@ -27,7 +27,7 @@ public class UserServiceTest {
     private UserRepository userRepository;
     @Test
     void createUser(){
-        User user=new User();
+        User user = new User();
         user.setId(1L);
         user.setFirstName("prem");
         user.setLastName("Kumar");
@@ -36,13 +36,13 @@ public class UserServiceTest {
         userRepository.save(user);
 
         when(userRepository.save(ArgumentMatchers.any(User.class))).thenReturn(user);
-        User newUser=userService.createUser(user);
+        User newUser = userService.createUser(user);
         assertThat(newUser.getGmail()).isNotEqualTo(null);
         assertEquals(newUser.getLastName(),"Kumar");
     }
     @Test
     void getAllUser(){
-        User user=new User();
+        User user = new User();
         user.setId(1L);
         user.setFirstName("prem");
         user.setLastName("Kumar");
@@ -50,7 +50,7 @@ public class UserServiceTest {
         user.setMobileNumber("4324242411");
         userRepository.save(user);
 
-        List<User> list=userRepository.findAll();
+        List<User> list = userRepository.findAll();
         list.add(user);
         when(userRepository.findAll()).thenReturn(list);
         List<User> users=userService.allUsers();
@@ -61,7 +61,7 @@ public class UserServiceTest {
 
     @Test
     void userById(){
-        User user=new User();
+        User user = new User();
         user.setId(1L);
         user.setFirstName("prem");
         user.setLastName("Kumar");
@@ -70,7 +70,7 @@ public class UserServiceTest {
         userRepository.save(user);
 
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
-        Optional<User> existingUser=userService.userById(1L);
+        Optional<User> existingUser = userService.userById(1L);
         assertEquals(existingUser.get().getId(),1L);
         assertEquals(existingUser.get().getFirstName(),"prem");
         assertEquals(existingUser.get().getLastName(),"Kumar");
@@ -79,7 +79,7 @@ public class UserServiceTest {
     }
     @Test
     void deleteUserById(){
-        User user=new User();
+        User user = new User();
         user.setId(1L);
         user.setFirstName("prem");
         user.setLastName("Kumar");
@@ -94,7 +94,7 @@ public class UserServiceTest {
 
     @Test
     void updateUserById(){
-        User user=new User();
+        User user = new User();
         user.setId(1L);
         user.setFirstName("prem");
         user.setLastName("Kumar");
@@ -104,7 +104,7 @@ public class UserServiceTest {
 
         when(userRepository.save(any(User.class))).thenReturn(user);
         user.setGmail("prem@gmail.com");
-        User newUser=userService.createUser(user);
+        User newUser = userService.createUser(user);
         assertEquals("prem@gmail.com",user.getGmail());
     }
 }
