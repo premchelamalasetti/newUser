@@ -38,16 +38,11 @@ public class UserService {
 
     public Optional<User> userById(Long id)
     {
-        return Optional.ofNullable(userRepository.findById(id).orElseThrow(() ->new NullPointerException("User Not found")));
+        return userRepository.findById(id);
     }
 
-    public User updateUserById(User user,Long id){
-        User userDetials = userRepository.findById(id).orElseThrow(() -> new NullPointerException("User Not found" + id));
-        userDetials.setFirstName(user.getFirstName());
-        userDetials.setLastName(user.getLastName());
-        userDetials.setMobileNumber(user.getMobileNumber());
-        userDetials.setGmail(user.getGmail());
-        return userRepository.save(userDetials);
+    public User updateUserById(User user){
+        return userRepository.save(user);
     }
 
     public void  deleteUserById(Long id){

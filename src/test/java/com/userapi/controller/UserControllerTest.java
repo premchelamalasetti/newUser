@@ -118,7 +118,7 @@ public class UserControllerTest {
         userService.createUser(user);
 
         user.setMobileNumber("8125756777");
-        when(userService.updateUserById(any(User.class), anyLong())).thenReturn(user);
+        when(userService.updateUserById(any(User.class))).thenReturn(user);
         this.mockMvc.perform(put("/user/updateUserById/{id}", 1L).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(user)))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", is(user.getFirstName())))

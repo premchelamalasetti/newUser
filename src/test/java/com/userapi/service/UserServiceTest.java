@@ -105,6 +105,6 @@ public class UserServiceTest {
         when(userRepository.save(any(User.class))).thenReturn(user);
         user.setGmail("prem@gmail.com");
         User newUser = userService.createUser(user);
-        assertEquals("prem@gmail.com",user.getGmail());
+        assertEquals("prem@gmail.com",newUser.getGmail());
     }
 }

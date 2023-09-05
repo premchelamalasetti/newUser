@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -40,10 +41,10 @@ public class UserController {
         return userService.getAllUsers(page,size);
     }
 
-    @GetMapping("userById/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) throws Exception {
-        User user = userService.userById(id).orElseThrow(() -> new NullPointerException("User not found for this id :: " + id));
-        return ResponseEntity.ok().body(user);
+    @GetMapping("/userById/{id}")
+    public Optional<User> getUserById(@PathVariable Long id) throws Exception {
+        return userService.userById(id);
+        //return ResponseEntity.ok().body(user);
     }
 
     @DeleteMapping("/deleteUserById/{id}")
@@ -53,6 +54,6 @@ public class UserController {
 
     @PutMapping ("/updateUserById/{id}")
     public User updateUserById(@PathVariable Long id, @RequestBody User user) {
-         return userService.updateUserById(user,id);
+         return userService.updateUserById(user);
     }
 }

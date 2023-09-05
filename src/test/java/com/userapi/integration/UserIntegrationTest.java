@@ -13,8 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserIntegrationTest {
@@ -28,13 +27,15 @@ public class UserIntegrationTest {
     private static RestTemplate restTemplate;
 
     @BeforeAll
-    public static void setUp(){
+    public static void init(){
        restTemplate = new RestTemplate();
     }
+
     @AfterEach
     public  void delete(){
         userRepository.deleteAll();
     }
+
     @Test
     void createUser(){
         User user = new User();
@@ -68,9 +69,9 @@ public class UserIntegrationTest {
         assertThat(list.size()).isEqualTo(1);
     }
     @Test
-    void updateUserById(){
+    void  updateUserById(){
         User user = new User();
-        user.setId(1L);
+        user.setId(1l);
         user.setFirstName("prem");
         user.setLastName("kumar");
         user.setGmail("prem.ch@gmail.com");
@@ -79,40 +80,42 @@ public class UserIntegrationTest {
 
         user.setMobileNumber("8125756777");
         restTemplate.put(baseUrl+":"+port+"/user/updateUserById/{id}",user,user.getId());
-        User updatedUser=restTemplate.getForObject(baseUrl+":"+port+"/user/updateUserById/{id}"+user.getId(),User.class);
-        assertEquals(updatedUser.getFirstName(),"prem");
-        assertEquals(updatedUser.getLastName(),"kumar");
-        assertEquals(updatedUser.getGmail(),"prem.ch@gmail.com");
-        assertEquals(updatedUser.getMobileNumber(),"8125756777");
+        User updatedUser=restTemplate.getForObject(baseUrl+":"+port+"/user/userById/"+user.getId(),User.class);
+        System.out.println("<><><><"+updatedUser+"<><><><");
+        assertEquals("prem",updatedUser.getFirstName());
+        assertEquals("kumar",updatedUser.getLastName());
+        assertEquals("prem.ch@gmail.com",updatedUser.getGmail());
+        assertEquals("8125756777",updatedUser.getMobileNumber());
+        //http://localhost:8080/
     }
 
     @Test
     void deleteUserById(){
         User user = new User();
-        user.setId(1L);
         user.setFirstName("prem");
         user.setLastName("kumar");
         user.setGmail("prem.ch@gmail.com");
         user.setMobileNumber("4324242411");
         userRepository.save(user);
 
-        restTemplate.delete(baseUrl+":"+port+"/user/deleteUserById/{id}"+user.getId(),User.class);
-        int count=userRepository.findAll().size();
-        assertEquals(0,count);
+        restTemplate.delete(baseUrl+":"+port+"/user/deleteUserById/"+user.getId(),User.class);
+        User deletedUser=userRepository.findById(user.getId()).orElse(null);
+        assertNull(deletedUser);
     }
 
     @Test
-    void getUserById(){
+    void getUserById() {
         User user = new User();
-        user.setId(1L);
         user.setFirstName("prem");
         user.setLastName("kumar");
         user.setGmail("prem.ch@gmail.com");
         user.setMobileNumber("4324242411");
         userRepository.save(user);
 
-        User existingUser=restTemplate.getForObject(baseUrl+":"+port+"/user/userById/"+user.getId(),User.class);
+        User existingUser = restTemplate.getForObject(baseUrl + ":" + port + "/user/userById/" + user.getId(), User.class);
+        System.out.println("<><><><<" + user.getId() + "<><><>M>M>");
         assertNotNull(existingUser);
-        assertThat(user.getMobileNumber()).isEqualTo(existingUser.getMobileNumber());
+        assertEquals("prem",existingUser.getFirstName());
+
     }
 }
