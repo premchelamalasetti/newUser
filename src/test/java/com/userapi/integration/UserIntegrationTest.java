@@ -46,7 +46,7 @@ public class UserIntegrationTest {
         user.setMobileNumber("4324242411");
         userRepository.save(user);
 
-        User newUser=restTemplate.postForObject(baseUrl+":"+port+"/user/createUser",user,User.class);
+        User newUser=restTemplate.postForObject(baseUrl+":"+port+"/api/user",user,User.class);
         assertThat(user.getFirstName()).isEqualTo(newUser.getFirstName());
         assertThat(user.getLastName()).isEqualTo(newUser.getLastName());
         assertEquals(newUser.getFirstName(),"prem");
@@ -65,7 +65,7 @@ public class UserIntegrationTest {
         user.setMobileNumber("4324242411");
         userRepository.save(user);
 
-        List<User> list=restTemplate.getForObject(baseUrl+":"+port+"/user/allUsers",List.class);
+        List<User> list=restTemplate.getForObject(baseUrl+":"+port+"/api/users",List.class);
         assertThat(list.size()).isEqualTo(1);
     }
     @Test
@@ -79,8 +79,8 @@ public class UserIntegrationTest {
         userRepository.save(user);
 
         user.setMobileNumber("8125756777");
-        restTemplate.put(baseUrl+":"+port+"/user/updateUserById/{id}",user,user.getId());
-        User updatedUser=restTemplate.getForObject(baseUrl+":"+port+"/user/userById/"+user.getId(),User.class);
+        restTemplate.put(baseUrl+":"+port+"/api/update/{id}",user,user.getId());
+        User updatedUser=restTemplate.getForObject(baseUrl+":"+port+"/api/user/"+user.getId(),User.class);
         System.out.println("<><><><"+updatedUser+"<><><><");
         assertEquals("prem",updatedUser.getFirstName());
         assertEquals("kumar",updatedUser.getLastName());
@@ -98,7 +98,7 @@ public class UserIntegrationTest {
         user.setMobileNumber("4324242411");
         userRepository.save(user);
 
-        restTemplate.delete(baseUrl+":"+port+"/user/deleteUserById/"+user.getId(),User.class);
+        restTemplate.delete(baseUrl+":"+port+"/api/delete/"+user.getId(),User.class);
         User deletedUser=userRepository.findById(user.getId()).orElse(null);
         assertNull(deletedUser);
     }
@@ -112,7 +112,7 @@ public class UserIntegrationTest {
         user.setMobileNumber("4324242411");
         userRepository.save(user);
 
-        User existingUser = restTemplate.getForObject(baseUrl + ":" + port + "/user/userById/" + user.getId(), User.class);
+        User existingUser = restTemplate.getForObject(baseUrl + ":" + port + "/api/user/" + user.getId(), User.class);
         System.out.println("<><><><<" + user.getId() + "<><><>M>M>");
         assertNotNull(existingUser);
         assertEquals("prem",existingUser.getFirstName());

@@ -70,12 +70,12 @@ public class UserServiceTest {
         userRepository.save(user);
 
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
-        Optional<User> existingUser = userService.userById(1L);
-        assertEquals(existingUser.get().getId(),1L);
-        assertEquals(existingUser.get().getFirstName(),"prem");
-        assertEquals(existingUser.get().getLastName(),"Kumar");
-        assertEquals(existingUser.get().getGmail(),"prem.ch@gmail.com");
-        assertEquals(existingUser.get().getMobileNumber(),"4324242411");
+        User existingUser = userService.userById(1L);
+        assertEquals(existingUser.getId(),1L);
+        assertEquals(existingUser.getFirstName(),"prem");
+        assertEquals(existingUser.getLastName(),"Kumar");
+        assertEquals(existingUser.getGmail(),"prem.ch@gmail.com");
+        assertEquals(existingUser.getMobileNumber(),"4324242411");
     }
     @Test
     void deleteUserById(){

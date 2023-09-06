@@ -11,7 +11,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
 @DataJpaTest
 public class UserRepositoryTest {
 
@@ -20,7 +19,6 @@ public class UserRepositoryTest {
 
     @Test
     void createEmployeeTest() {
-
         User user = new User();
         user.setFirstName("prem");
         user.setLastName("Kumar");
@@ -38,8 +36,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    void allUser(){
-
+    void allUser() {
         User user = new User();
         user.setFirstName("prem");
         user.setLastName("Kumar");
@@ -47,11 +44,11 @@ public class UserRepositoryTest {
         user.setMobileNumber("4324242411");
 
         List<User> list = userRepository.findAll();
-        assertEquals(1,1);
+        assertEquals(1, 1);
     }
 
     @Test
-     void deleteUserById(){
+    void deleteUserById() {
 
         User user = new User();
         user.setId(1L);
@@ -61,14 +58,14 @@ public class UserRepositoryTest {
         user.setMobileNumber("4324242411");
         userRepository.save(user);
 
-       userRepository.deleteById(1L);
-       List<User> list = userRepository.findAll();
-        System.out.println("-------"+list.size());
-       assertThat(list.size()).isEqualTo(0);
+        userRepository.deleteById(1L);
+        List<User> list = userRepository.findAll();
+        System.out.println("-------" + list.size());
+        assertThat(list.size()).isEqualTo(0);
     }
 
     @Test
-    void updateUserById(){
+    void updateUserById() {
 
         User user = new User();
         user.setId(1L);
@@ -81,13 +78,14 @@ public class UserRepositoryTest {
         user.setGmail("krishna.kti@gmail.com");
         User updatingUser = userRepository.save(user);
         assertNotNull(updatingUser);
-        assertEquals(user.getFirstName(),"prem");
-        assertEquals(user.getLastName(),"Kumar");
-        assertEquals(user.getMobileNumber(),"4324242411");
-        assertEquals(user.getGmail(),"krishna.kti@gmail.com");
+        assertEquals(user.getFirstName(), "prem");
+        assertEquals(user.getLastName(), "Kumar");
+        assertEquals(user.getMobileNumber(), "4324242411");
+        assertEquals(user.getGmail(), "krishna.kti@gmail.com");
     }
+
     @Test
-    void getUserById(){
+    void getUserById() {
         User user = new User();
         user.setId(1L);
         user.setFirstName("prem");
@@ -99,10 +97,10 @@ public class UserRepositoryTest {
         User existingUser = userRepository.findById(user.getId()).get();
         assertNotNull(existingUser);
         assertThat(existingUser.getId()).isEqualTo(1L);
-        System.out.println("------"+existingUser.getFirstName());
-        assertEquals(existingUser.getFirstName(),"prem");
-        assertEquals(existingUser.getLastName(),"Kumar");
-        assertEquals(existingUser.getMobileNumber(),"4324242411");
-        assertEquals(existingUser.getGmail(),"prem.ch@gmail.com");
+        System.out.println("------" + existingUser.getFirstName());
+        assertEquals(existingUser.getFirstName(), "prem");
+        assertEquals(existingUser.getLastName(), "Kumar");
+        assertEquals(existingUser.getMobileNumber(), "4324242411");
+        assertEquals(existingUser.getGmail(), "prem.ch@gmail.com");
     }
 }

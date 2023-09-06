@@ -1,5 +1,6 @@
 package com.userapi.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.userapi.model.User;
 import com.userapi.service.UserService;
@@ -48,7 +49,7 @@ public class UserControllerTest {
         //userService.createUser(user);
 
         when(userService.createUser(any(User.class))).thenReturn(user);
-        ResultActions resultActions = mockMvc.perform(post("/user/createUser").contentType(MediaType.APPLICATION_JSON)
+        ResultActions resultActions = mockMvc.perform(post("/api/user").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(user)));
         resultActions.andDo(print()).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.firstName", is(user.getFirstName())))
@@ -69,7 +70,7 @@ public class UserControllerTest {
         list.add(user);
         when(userService.allUsers()).thenReturn(list);
         this.mockMvc.
-                perform(get("/user/allUsers").contentType(MediaType.APPLICATION_JSON_VALUE).content(objectMapper.writeValueAsString(list)))
+                perform(get("/api/users").contentType(MediaType.APPLICATION_JSON_VALUE).content(objectMapper.writeValueAsString(list)))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()", is(list.size())));
     }
@@ -83,9 +84,10 @@ public class UserControllerTest {
         user.setGmail("prem@gmail.com");
         user.setMobileNumber("4234241231");
 
-        when(userService.userById(anyLong())).thenReturn(Optional.of(user));
-        ResultActions resultActions = mockMvc.perform(get("/user/userById/{id}", 1L).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(user)))
-                .andDo(print()).andExpect(status().isOk())
+        when(userService.userById(anyLong())).thenReturn(user);
+        ResultActions resultActions = mockMvc.perform(get("/api/user/{id}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(user))).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", is(user.getFirstName())))
                 .andExpect(jsonPath("$.lastName", is(user.getLastName())))
                 .andExpect(jsonPath("$.gmail", is(user.getGmail())))
@@ -103,8 +105,7 @@ public class UserControllerTest {
         user.setMobileNumber("4234241231");
 
         doNothing().when(userService).deleteUserById(anyLong());
-        this.mockMvc.perform(delete("/user/deleteUserById/{id}", 1L))
-                .andExpect(status().isOk());
+        this.mockMvc.perform(delete("/api/delete/{id}", 1L)).andExpect(status().isOk());
     }
 
     @Test
@@ -119,7 +120,7 @@ public class UserControllerTest {
 
         user.setMobileNumber("8125756777");
         when(userService.updateUserById(any(User.class))).thenReturn(user);
-        this.mockMvc.perform(put("/user/updateUserById/{id}", 1L).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(user)))
+        this.mockMvc.perform(put("/api/user/{id}", 1L).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(user)))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", is(user.getFirstName())))
                 .andExpect(jsonPath("$.lastName", is(user.getLastName())))
