@@ -20,49 +20,51 @@ import java.util.Optional;
 public class UserService {
 
     @Autowired
-    private  UserRepository userRepository;
+    private UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     public User createUser(User user) {
-        user.setDate(new Date());
-        if(user.getFirstName()==null||user.getLastName()==null||user.getGmail()==null||user.getMobileNumber()==null) {
-            throw new NoSufficientDataException("Data is Not sufficient");
+
+        if (user.getFirstName() == null || user.getFirstName() == "" || user.getLastName() == null || user.getLastName() == "" || user.getGmail() == null || user.getGmail() == "" || user.getMobileNumber() == null|| user.getMobileNumber() == "" ) {
+            throw new NoSufficientDataException();
         }
         return userRepository.save(user);
     }
 
-    public List<User> allUsers(){
-        if(userRepository.findAll().isEmpty()) {
-            throw new EmpytDataFoundException("Empty");
+    public List<User> allUsers() {
+        if (userRepository.findAll().isEmpty()) {
+            throw new EmpytDataFoundException();
         }
         return userRepository.findAll();
     }
 
-    public Page<User> getAllUsers(int pageNo, int pageSize){
-        Pageable pageable= PageRequest.of(pageNo,pageSize);
-        return userRepository.findAll( pageable);
+    public Page<User> getAllUsers(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return userRepository.findAll(pageable);
     }
 
-    public User userById(Long id)
-    {
-        if(userRepository.findById(id).isEmpty())
-           throw new UserNotFoundException("user not there");
-        return userRepository.findById(id).get();
+    public User userById(Long id) {
+
+        Optional<User> userObj = userRepository.findById(id);
+        if (userObj.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+        return userObj.get();
     }
 
-    public User updateUserById(User user){
-        User user1=userRepository.save(user);
+    public User updateUserById(User user) {
+        User user1 = userRepository.save(user);
 
-        if(user.getFirstName()==user1.getFirstName()||user.getLastName()==user1.getLastName()||user.getGmail()==user1.getGmail()||user.getMobileNumber()== user1.getMobileNumber() ) {
-            throw new NoDataUpdatedException("NOT updated");
+        if (user.getId()== user1.getId()||user.getFirstName() == user1.getFirstName() || user.getLastName() == user1.getLastName() || user.getGmail() == user1.getGmail() || user.getMobileNumber() == user1.getMobileNumber()) {
+            throw new NoDataUpdatedException();
         }
         return userRepository.save(user);
     }
 
-    public String  deleteUserById(Long id){
+    public String deleteUserById(Long id) {
         userRepository.deleteById(id);
         return "user deleted";
     }

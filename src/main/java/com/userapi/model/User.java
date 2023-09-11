@@ -1,26 +1,27 @@
 package com.userapi.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 @Entity
-@Table(name = "usersDetails")//,uniqueConstraints = @UniqueConstraint(columnNames = "gmail")
+@Table(name = "usersDetails",uniqueConstraints = @UniqueConstraint(columnNames = "gmail"))
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @NotNull
+    @NotNull(message = "Firstname not be null")
     private String firstName;
     @NotNull(message = "LastName not be null")
     private String lastName;
-    @Email
+    @Email(message = "Provide a valid Email address")
     private String gmail;
     @Pattern(regexp="(^$|[0-9]{10})")
+    @NotNull(message = "Message is not null")
     private String mobileNumber;
     private Date date;
 
