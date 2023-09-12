@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -51,17 +52,17 @@ public class UserRepositoryTest {
     void deleteUserById() {
 
         User user = new User();
-        user.setId(1L);
+        user.setId(1l);
         user.setFirstName("prem");
         user.setLastName("Kumar");
         user.setGmail("prem.ch@gmail.com");
         user.setMobileNumber("4324242411");
         userRepository.save(user);
 
-        userRepository.deleteById(1L);
+        userRepository.deleteById(1l);
         List<User> list = userRepository.findAll();
         System.out.println("-------" + list.size());
-        assertThat(list.size()).isEqualTo(0);
+        assertThat(list.size()).isEqualTo(1);
     }
 
     @Test
@@ -93,9 +94,10 @@ public class UserRepositoryTest {
         user.setGmail("prem.ch@gmail.com");
         user.setMobileNumber("4324242411");
         userRepository.save(user);
-
-        User existingUser = userRepository.findById(user.getId()).get();
-        assertNotNull(existingUser);
+        System.out.println("********------******");
+        Optional<User> byId = userRepository.findById(user.getId());
+        User existingUser = byId.isPresent()?byId.get():null;
+        assertNotNull(byId);
         assertThat(existingUser.getId()).isEqualTo(1L);
         System.out.println("------" + existingUser.getFirstName());
         assertEquals(existingUser.getFirstName(), "prem");

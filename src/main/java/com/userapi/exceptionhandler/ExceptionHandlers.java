@@ -1,6 +1,7 @@
 package com.userapi.exceptionhandler;
 
 import com.userapi.exceptions.*;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -35,8 +36,8 @@ public class ExceptionHandlers {
     public  ResponseEntity<String> handleNumberFormatException(NumberFormatException numberFormatException){
         return new ResponseEntity<String>("String id is not allowed here",HttpStatus.BAD_REQUEST);
     }
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<String> handleUserAlreadyException(UserAlreadyExistsException userAlreadyExistsException){
-        return  new ResponseEntity<String>("User already exists ",HttpStatus.ALREADY_REPORTED);
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<String> handleUserAlreadyException(DataIntegrityViolationException dataIntegrityViolationException){
+        return  new ResponseEntity<String>("User with provided gmail already exists already exists ",HttpStatus.ALREADY_REPORTED);
     }
 }

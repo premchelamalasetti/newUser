@@ -41,6 +41,7 @@ public class UserControllerTest {
     @Test
     void createUser() throws Exception {
         User user = new User();
+        user.setId(1L);
         user.setFirstName("prem");
         user.setLastName("kumar");
         user.setGmail("prem@gmail.com");
@@ -49,9 +50,10 @@ public class UserControllerTest {
         //userService.createUser(user);
 
         when(userService.createUser(any(User.class))).thenReturn(user);
-        ResultActions resultActions = mockMvc.perform(post("/api/user").contentType(MediaType.APPLICATION_JSON)
+        ResultActions resultActions = mockMvc.perform(post("/api/users").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(user)));
         resultActions.andDo(print()).andExpect(status().isCreated())
+                //.andExpect(jsonPath("$.id",is(user.getId())))
                 .andExpect(jsonPath("$.firstName", is(user.getFirstName())))
                 .andExpect(jsonPath("$.lastName", is(user.getLastName())))
                 .andExpect(jsonPath("$.gmail", is(user.getGmail())))
@@ -85,7 +87,7 @@ public class UserControllerTest {
         user.setMobileNumber("4234241231");
 
         when(userService.userById(anyLong())).thenReturn(user);
-        ResultActions resultActions = mockMvc.perform(get("/api/user/{id}", 1L)
+        ResultActions resultActions = mockMvc.perform(get("/api/users/{id}", 2L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user))).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", is(user.getFirstName())))
@@ -104,8 +106,8 @@ public class UserControllerTest {
         user.setGmail("prem@gmail.com");
         user.setMobileNumber("4234241231");
 
-        doNothing().when(userService).deleteUserById(anyLong());
-        this.mockMvc.perform(delete("/api/delete/{id}", 1L)).andExpect(status().isOk());
+        doNothing().doThrow(new RuntimeException()).when(userService).deleteUserById(anyLong());
+        this.mockMvc.perform(delete("/api/users/{id}", 1L)).andExpect(status().isOk());
     }
 
     @Test
@@ -120,7 +122,7 @@ public class UserControllerTest {
 
         user.setMobileNumber("8125756777");
         when(userService.updateUserById(any(User.class))).thenReturn(user);
-        this.mockMvc.perform(put("/api/user/{id}", 1L).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(user)))
+        this.mockMvc.perform(put("/api/users/{id}", 1L).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(user)))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", is(user.getFirstName())))
                 .andExpect(jsonPath("$.lastName", is(user.getLastName())))

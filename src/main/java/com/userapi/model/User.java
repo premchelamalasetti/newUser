@@ -13,7 +13,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     @NotNull(message = "Firstname not be null")
     private String firstName;
     @NotNull(message = "LastName not be null")
@@ -25,7 +25,7 @@ public class User {
     private String mobileNumber;
     private Date date;
 
-    public User(long id, String firstName, String lastName, String gmail, String mobileNumber, Date date) {
+    public User(Long id, String firstName, String lastName, String gmail, String mobileNumber, Date date) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -36,11 +36,11 @@ public class User {
     public User(){
         super();
     }
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

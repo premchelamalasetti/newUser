@@ -1,13 +1,12 @@
 package com.userapi.controller;
 
-import com.userapi.exceptions.UserAlreadyExistsException;
 import com.userapi.model.User;
 import com.userapi.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,8 +23,8 @@ public class UserController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public User user(@Valid @RequestBody User user) throws UserAlreadyExistsException {
-        return userService.createUser(user);
+    public User user(@Valid @RequestBody User user) throws DataIntegrityViolationException {
+        return  userService.createUser(user);
     }
 
     @GetMapping()
@@ -40,7 +39,6 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) throws Exception {
-        System.out.println("EUEHJERW====");
         return userService.userById(id);
         //return ResponseEntity.ok().body(user);
     }
