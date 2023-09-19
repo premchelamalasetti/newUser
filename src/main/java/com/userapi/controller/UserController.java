@@ -24,6 +24,7 @@ public class UserController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public User user(@Valid @RequestBody User user) throws DataIntegrityViolationException {
+
         return  userService.createUser(user);
     }
 

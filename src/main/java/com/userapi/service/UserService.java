@@ -27,7 +27,6 @@ public class UserService {
     }
 
     public User createUser(User user) {
-
         if (user.getFirstName() == null || user.getFirstName() == "" || user.getLastName() == null || user.getLastName() == "" || user.getGmail() == null || user.getGmail() == "" || user.getMobileNumber() == null|| user.getMobileNumber() == "" ) {
             throw new NoSufficientDataException();
         }

@@ -1,6 +1,7 @@
 package com.userapi.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -23,6 +24,7 @@ public class User {
     @Pattern(regexp="(^$|[0-9]{10})")
     @NotNull(message = "Message is not null")
     private String mobileNumber;
+    @CreationTimestamp
     private Date date;
 
     public User(Long id, String firstName, String lastName, String gmail, String mobileNumber, Date date) {
@@ -31,7 +33,7 @@ public class User {
         this.lastName = lastName;
         this.gmail = gmail;
         this.mobileNumber = mobileNumber;
-        this.date = new Date();
+        this.date = date;
     }
     public User(){
         super();
@@ -77,7 +79,7 @@ public class User {
     }
 
     public Date getDate() {
-        return new Date();
+        return date;
     }
 
     public void setDate(Date date) {

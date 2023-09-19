@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 public class UserapiApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(UserapiApplication.class, args);
     }
 
