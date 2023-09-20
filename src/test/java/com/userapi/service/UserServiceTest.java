@@ -1,6 +1,5 @@
 package com.userapi.service;
 
-import com.userapi.exceptions.EmpytDataFoundException;
 import com.userapi.exceptions.NoDataUpdatedException;
 import com.userapi.exceptions.NoSufficientDataException;
 import com.userapi.exceptions.UserNotFoundException;
@@ -19,7 +18,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
