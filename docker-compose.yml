@@ -6,15 +6,11 @@ services:
     ports:
       - "8080:8080"
     environment:
-       DATABASE_URL: jdbc:postgresql://postgres:5432/test
-       DATABASE_USERNAME: postgres
-       DATABASE_PASSWORD: admin
+       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/test
+       SPRING_DATASOURCE_USERNAME: postgres
+       SPRING_DATASOURCE_PASSWORD: admin
     depends_on:
       - postgres
-    networks:
-      - custom_network
-    volumes:
-      - userapi_data:/app/data
   postgres:
     image: postgres:latest
     ports:
@@ -24,8 +20,7 @@ services:
       POSTGRES_DB: test
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
-    networks:
-      - custom_network
+
     volumes:
       - postgres_data:/var/lib/postgresql/data
   pgadmin:
@@ -38,9 +33,7 @@ services:
     ports:
       - "5050:80"
 
-networks:
-  custom_network:
-    driver: bridge
+
 volumes:
   userapi_data:
   postgres_data:
