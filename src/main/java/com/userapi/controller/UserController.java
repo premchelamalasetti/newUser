@@ -1,12 +1,23 @@
 package com.userapi.controller;
 
+import com.userapi.model.LoginDto;
 import com.userapi.model.User;
+import com.userapi.repository.RoleRepository;
+import com.userapi.repository.UserRepository;
 import com.userapi.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +27,17 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private AuthenticationManager authenticationManager;
+    private RoleRepository roleRepository;
+    private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AuthenticationManager authenticationManager, RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.roleRepository = roleRepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -53,5 +72,11 @@ public class UserController {
     @PutMapping("/{id}")
     public User updateUserById(@PathVariable Long id, @RequestBody User user) {
         return userService.updateUserById(user);
+    }
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
+        Authentication authentication=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getName(),loginDto.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return new ResponseEntity<>("User Authenticated",HttpStatus.OK);
     }
 }
